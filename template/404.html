@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404</title>
+    <link rel="icon" type="image/x-icon" href="/static/image/favicon.svg"/>
+</head>
+<style>
+    @keyframes blink {
+        0% {opacity: 1;}
+        50% {opacity: 0;}
+        100% {opacity: 1;}
+    }
+    h1{
+        text-align: center;
+        animation: blink 1s infinite;
+    }
+    #box{
+        height: 30%;
+        width: 30%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5%;
+    }
+    #box img{
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+</style>
+<body>
+
+    <div>
+    <h1> 404 NOT FOUND</h1>
+    <div id="box">
+<!--        <img src="/static/image/404.gif" />-->
+        <img id="404-gif" src="" />
+<!--        <img src="https://s0.zstatic.net/2023/10/3c3240ebd63c74c681cf63357c0e6209_c1fc3686809653c760512d5ddef7a17743409834.gif"/>-->
+    </div>
+</div>
+</body>
+<script>
+    var gifs = ["404_1.gif", "404_2.gif"]
+    var randomIndex = Math.floor(Math.random() * gifs.length)
+    document.getElementById("404-gif").src = "/static/image/" + gifs[randomIndex]
+</script>
+</html>
