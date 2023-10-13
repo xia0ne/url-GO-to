@@ -23,5 +23,6 @@ func MyInitRouter(r *gin.Engine) {
 	router := r.Group("/api")
 	{
 		router.GET("/:key", controller.RedirectToUrl)
+		router.GET("/detail/:key", controller.GetDetailFromRedis)
 	}
 }

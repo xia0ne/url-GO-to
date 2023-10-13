@@ -71,6 +71,19 @@ func RedirectToUrl(c *gin.Context) {
 	if url, err := service.GetUrlFromRedis(key); err != nil {
 		c.Redirect(http.StatusMovedPermanently, "/err")
 	} else {
+		_ = service.IncrKeysToRedis(key)
 		c.Redirect(http.StatusMovedPermanently, url)
 	}
+}
+
+func GetDetailFromRedis(c *gin.Context) {
+	key := c.Param("key")
+	value, _ := service.GetUrlFromRedis(key)
+	counts, _ := service.GetUrlCountsFromRedis(key)
+	ttls, _ := service.GetUrlTTLFromRedis(key)
+	c.JSON(http.StatusOK, gin.H{
+		"value":  value,
+		"counts": counts,
+		"ttl":    ttls,
+	})
 }
