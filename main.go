@@ -4,14 +4,16 @@ import (
 	"ginLearnDemo/model"
 	"ginLearnDemo/service"
 	"github.com/gin-gonic/gin"
-	"log"
 )
 
+func init() {
+	model.MyConfigs = service.ReadConfig()
+	model.MyRedis = service.InitializeStore()
+	model.MyStore = model.NewUrlStore()
+}
+
 func main() {
-	Configs, _ := model.NewConfig().ReadConfig()
-	log.Println("the new config: ", Configs.Config.BaseUrl)
 	r := gin.Default()
-	store := service.NewUrlStore()
-	MyInitRouter(r, store, Configs)
-	r.Run(Configs.Config.Port)
+	MyInitRouter(r)
+	r.Run(model.MyConfigs.Config.Port)
 }

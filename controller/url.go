@@ -2,7 +2,6 @@ package controller
 
 import (
 	"ginLearnDemo/model"
-	"ginLearnDemo/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -34,7 +33,7 @@ type AddRequest struct {
 	Slug *string `json:"slug"`
 }
 
-func Add(c *gin.Context, urlstore *service.URLStore, configs *model.Config) {
+func Add(c *gin.Context) {
 	var req AddRequest
 	err := c.ShouldBindJSON(&req)
 	if err != nil || req.URL == "" {
@@ -47,28 +46,30 @@ func Add(c *gin.Context, urlstore *service.URLStore, configs *model.Config) {
 	var slug string
 	if req.Slug != nil {
 		slug = *req.Slug
-		if !urlstore.Set(slug, req.URL) {
+		if !model.MyStore.Set(slug, req.URL) {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "error",
 				"message": "Slug already exists",
 			})
 		}
 		c.JSON(http.StatusOK, gin.H{
-			"status":  "success",
-			"message": configs.Config.BaseUrl + slug,
+			"status": "success",
+			//"message":
+			"message": model.MyConfigs.Config.BaseUrl + slug,
 		})
+
 	} else {
-		key := urlstore.Put(req.URL)
+		key := model.MyStore.Put(req.URL)
 		c.JSON(http.StatusOK, gin.H{
 			"status":  "success",
-			"message": configs.Config.BaseUrl + key,
+			"message": model.MyConfigs.Config.BaseUrl + key,
 		})
 	}
 }
 
-func Myredirect(c *gin.Context, urlstore *service.URLStore) {
-	url := c.Param("url")
-	key := urlstore.Get(url)
+func Myredirect(c *gin.Context) {
+	url := c.Param("keys")
+	key := model.MyStore.Get(url)
 	if key == "" {
 		c.Redirect(http.StatusMovedPermanently, "/err")
 	}

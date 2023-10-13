@@ -7,5 +7,5 @@ import (
 )
 
 func TestBase62(t *testing.T) {
-	log.Println("result", utils.Base62("baidu.com"))
+	log.Println("result", utils.Base62())
 }
